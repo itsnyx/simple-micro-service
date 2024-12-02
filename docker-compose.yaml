@@ -1,0 +1,48 @@
+version: "3.7"
+services:
+  microservice1:
+    build:
+      context: ./backend/microservice1
+    container_name: microservice1
+    expose:
+      - 3001
+    networks:
+      - nodejs-demo
+
+  microservice2:
+    build:
+      context: ./backend/microservice2
+    container_name: microservice2
+    expose:
+      - 3002
+    networks:
+      - nodejs-demo
+
+  api-gw:
+    build:
+      context: ./backend/api-gw
+    container_name: api-gw
+    ports:
+      - "3000:3000"
+    depends_on:
+      - microservice1
+      - microservice2
+    networks:
+      - nodejs-demo
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - 8000:3000
+    depends_on:
+      - api-gw
+    networks:
+      - nodejs-demo
+
+networks:
+  nodejs-demo:
+    driver: bridge
+    name: nodejs-demo
+    external: true
