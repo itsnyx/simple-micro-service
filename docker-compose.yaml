@@ -44,5 +44,5 @@ services:
 networks:
   nodejs-demo:
     driver: bridge
-    name: nodejs-demo
+    name: simple-micro
     external: true
